@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+/**
+ * 
+ * Created by Ricardo Jiménez Hernández
+ * 12/08/19.
+ */
+
+const log = require('debug')('resume-api:server');
+const logError = require('debug')('resume-api:error');
+let app = require('../app');
+const storageHelper = require('../utils/storage.helper');
+
+log('starting');
+
+storageHelper.initialize(process.env.MONGO_URL)
+  .then(() => {
+    log(`Connected to ${process.env.MONGO_URL}`);
+
+    const port = process.env.PORT || '4000';
+    app.listen(port, () => log(`resume-api listening on port ${port}`));
+  })
+  .catch(err => {
+    logError(err.message);
+    process.exit(1);
+  });

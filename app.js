@@ -9,7 +9,6 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const logger = require('morgan');
 const cors = require('cors');
-// const jwtAuth = require('./middleware/jwt.middleware');
 
 const root = require('./routes/index');
 const resume = require('./routes/resume');
@@ -20,8 +19,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
-app.use(cors());
-// app.use(jwtAuth);
+app.use(cors({
+  origin: process.env.APP_URL
+}));
 
 app.use('/', root);
 app.use('/resume', resume);
